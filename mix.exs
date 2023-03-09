@@ -1,13 +1,20 @@
 defmodule Tiktoken.MixProject do
   use Mix.Project
 
+  @url "https://github.com/connorjacobsen/tiktoken-elixir"
+
   def project do
     [
       app: :tiktoken,
       version: "0.1.0",
       elixir: "~> 1.13",
+      description: "Elixir bindings for Tiktoken tokenizer",
+      source_url: @url,
+      homepage_url: @url,
       start_permanent: Mix.env() == :prod,
+      package: package(),
       deps: deps(),
+      licenses: licenses(),
       aliases: aliases()
     ]
   end
@@ -22,9 +29,18 @@ defmodule Tiktoken.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:rustler, "~> 0.27.0"}
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+    ]
+  end
+
+  defp licenses, do: ~w(MIT)
+
+  defp package do
+    [
+      files: ~w(lib priv .formatter.exs mix.exs README* LICENSE* native),
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/connorjacobsen/tiktoken-elixir"}
     ]
   end
 
