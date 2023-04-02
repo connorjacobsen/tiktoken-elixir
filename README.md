@@ -17,6 +17,12 @@ def deps do
 end
 ```
 
+You will need to have a Rust compiler and Python installed. The libraries the bindings are built on use PyO3 so you may need to set the PyO3 flag before compiling:
+
+```bash
+export PYO3_PYTHON=python
+```
+
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/tiktoken>.
