@@ -1,0 +1,59 @@
+on: [pull_request]
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    strategy:
+      matrix:
+        elixir:
+          - 1.14
+          - 1.13
+        otp:
+          - 25.3
+          - 24.3
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: ${{ matrix.elixir }}
+        otp-version: ${{ matrix.otp }}
+        version-type: strict
+    - name: Restore dependencies cache
+      uses: actions/cache@v3
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+    - name: Setup machine
+      env:
+        MIX_ENV: test
+      run: |
+        bash .github/workflows/setup.sh
+    - name: Run Tests
+      run: mix test --trace
+
+  Linting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: '1.13'
+        otp-version: '24.3'
+        version-type: strict
+    - name: Restore dependencies cache
+      uses: actions/cache@v3
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+    - name: Setup machine
+      env:
+        MIX_ENV: test
+      run: |
+        bash .github/workflows/setup.sh
+    - name: Check Format
+      run: mix format --check-formatted

@@ -19,6 +19,6 @@ defmodule Tiktoken.CL100kTest do
 
   test "decode" do
     {:ok, tokens} = CL100K.decode([39, 15, 86, 571, 265, 1472, 30])
-    assert tokens ==  "H0w @re You?"
+    assert tokens == "H0w @re You?"
   end
 end
