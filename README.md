@@ -17,10 +17,33 @@ def deps do
 end
 ```
 
-You will need to have a Rust compiler and Python installed. The libraries the bindings are built on use PyO3 so you may need to set the PyO3 flag before compiling:
+## Required dependencies to compile the shared library
+
+You will need to have a `Rust` compiler and `Python` installed.
+
+For example on `debian`/`ubuntu` this means:
+
+```bash
+apt install cargo libpython3-dev
+```
+
+To install more up-to-date versions of `Rust` check [rustup](https://rustup.rs/).
+
+The libraries the bindings are built on use `PyO3` so you may need to set the `PyO3` flag before compiling:
 
 ```bash
 export PYO3_PYTHON=python
+# or depending on your OS
+export PYO3_PYTHON=python3
+```
+
+## Force compilation of the shared library
+
+If the precompiled shared library are not available, you can force
+`rustler_precompiled` to compile it by adding the following to you `config.exs`:
+
+```elixir
+config :rustler_precompiled, :force_build, tiktoken: true
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)

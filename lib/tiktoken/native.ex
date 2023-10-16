@@ -8,7 +8,6 @@ defmodule Tiktoken.Native do
     otp_app: :tiktoken,
     crate: "tiktoken",
     base_url: "#{url}/releases/download/v#{version}",
-    force_build: System.get_env("TIKTOKEN_FORCE") in ["1", "true"],
     version: version
 
   def encoding_for_model(_model), do: err()
