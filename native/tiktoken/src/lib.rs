@@ -3,7 +3,13 @@ use std::vec::Vec;
 
 #[rustler::nif]
 fn encoding_for_model(model: &str) -> Option<&str> {
-    tiktoken_rs::encoding_for_model(model)
+    match tiktoken_rs::tokenizer::get_tokenizer(model) {
+        Some(tiktoken_rs::tokenizer::Tokenizer::Cl100kBase) => Some("cl100k_base"),
+        Some(tiktoken_rs::tokenizer::Tokenizer::P50kBase) => Some("p50k_base"),
+        Some(tiktoken_rs::tokenizer::Tokenizer::R50kBase) => Some("r50k_base"),
+        Some(tiktoken_rs::tokenizer::Tokenizer::P50kEdit) => Some("p50k_edit"),
+        _ => None,
+    }
 }
 
 // p50k
