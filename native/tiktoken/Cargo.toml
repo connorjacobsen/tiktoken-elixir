@@ -11,4 +11,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 rustler = "0.30.0"
-tiktoken-rs = "0.2.2"
+tiktoken-rs = "0.5.6"
