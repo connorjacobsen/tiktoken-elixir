@@ -32,5 +32,7 @@ defmodule Tiktoken.Native do
   def cl100k_encode_with_special_tokens(_input), do: err()
   def cl100k_decode(_ids), do: err()
 
+  def context_size_for_model(_model), do: err()
+
   defp err, do: :erlang.nif_error(:nif_not_loaded)
 end

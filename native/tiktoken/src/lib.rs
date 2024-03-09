@@ -180,6 +180,11 @@ fn cl100k_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
+#[rustler::nif]
+fn context_size_for_model(model: &str) -> usize {
+    tiktoken_rs::model::get_context_size(model)
+}
+
 rustler::init!(
     "Elixir.Tiktoken.Native",
     [
@@ -199,6 +204,7 @@ rustler::init!(
         cl100k_encode_ordinary,
         cl100k_encode,
         cl100k_encode_with_special_tokens,
-        cl100k_decode
+        cl100k_decode,
+        context_size_for_model
     ]
 );

@@ -38,4 +38,12 @@ defmodule Tiktoken do
       {:error, {:unsupported_model, model}}
     end
   end
+
+  # Those two can be removed when a release of tiktoken-rs > 0.5.8 is released
+  def context_size_for_model("gpt-3.5-turbo-1106"), do: 16_385
+  def context_size_for_model("gpt-4-0125-preview"), do: 128_000
+
+  def context_size_for_model(model) do
+    Tiktoken.Native.context_size_for_model(model)
+  end
 end
