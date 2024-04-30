@@ -1,7 +1,7 @@
 defmodule Tiktoken.MixProject do
   use Mix.Project
 
-  @version "0.3.1"
+  @version "0.3.2"
   @url "https://github.com/connorjacobsen/tiktoken-elixir"
 
   def project do
@@ -40,7 +40,7 @@ defmodule Tiktoken.MixProject do
 
   defp package do
     [
-      files: ~w(lib .formatter.exs mix.exs README* LICENSE* native),
+      files: ~w(lib .formatter.exs mix.exs README* LICENSE* native checksum-*.exs),
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/connorjacobsen/tiktoken-elixir"}
     ]
