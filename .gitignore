@@ -26,5 +26,6 @@ tiktoken-*.tar
 /tmp/
 
 checksum-*
+tiktoken-*
 
 priv/native/libtiktoken.so

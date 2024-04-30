@@ -12,7 +12,7 @@ by adding `tiktoken` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:tiktoken, "~> 0.1.0"}
+    {:tiktoken, "~> 0.3"}
   ]
 end
 ```
@@ -49,4 +49,3 @@ config :rustler_precompiled, :force_build, tiktoken: true
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/tiktoken>.
-
