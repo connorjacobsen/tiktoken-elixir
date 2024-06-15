@@ -4,6 +4,7 @@ use std::vec::Vec;
 #[rustler::nif]
 fn encoding_for_model(model: &str) -> Option<&str> {
     match tiktoken_rs::tokenizer::get_tokenizer(model) {
+        Some(tiktoken_rs::tokenizer::Tokenizer::O200kBase) => Some("o200k_base"),
         Some(tiktoken_rs::tokenizer::Tokenizer::Cl100kBase) => Some("cl100k_base"),
         Some(tiktoken_rs::tokenizer::Tokenizer::P50kBase) => Some("p50k_base"),
         Some(tiktoken_rs::tokenizer::Tokenizer::R50kBase) => Some("r50k_base"),
@@ -185,6 +186,48 @@ fn context_size_for_model(model: &str) -> usize {
     tiktoken_rs::model::get_context_size(model)
 }
 
+// o200k
+
+#[rustler::nif]
+fn o200k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
+    let bpe = tiktoken_rs::o200k_base_singleton();
+    {
+        let guard = bpe.lock();
+        Ok(guard.encode_ordinary(text))
+    }
+}
+
+#[rustler::nif]
+fn o200k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
+    let set = HashSet::from_iter(allowed_special.iter().cloned());
+    let bpe = tiktoken_rs::o200k_base_singleton();
+    {
+        let guard = bpe.lock();
+        Ok(guard.encode(text, set))
+    }
+}
+
+#[rustler::nif]
+fn o200k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
+    let bpe = tiktoken_rs::o200k_base_singleton();
+    {
+        let guard = bpe.lock();
+        Ok(guard.encode_with_special_tokens(text))
+    }
+}
+
+#[rustler::nif]
+fn o200k_decode(ids: Vec<usize>) -> Result<String, String> {
+    let bpe = tiktoken_rs::o200k_base_singleton();
+    {
+        let guard = bpe.lock();
+        match guard.decode(ids) {
+            Ok(text) => Ok(text),
+            Err(e) => Err(e.to_string()),
+        }
+    }
+}
+
 rustler::init!(
     "Elixir.Tiktoken.Native",
     [
@@ -205,6 +248,10 @@ rustler::init!(
         cl100k_encode,
         cl100k_encode_with_special_tokens,
         cl100k_decode,
+        o200k_encode_ordinary,
+        o200k_encode,
+        o200k_encode_with_special_tokens,
+        o200k_decode,
         context_size_for_model
     ]
 );
