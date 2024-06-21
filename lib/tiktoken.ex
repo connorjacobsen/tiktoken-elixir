@@ -7,7 +7,8 @@ defmodule Tiktoken do
     "p50k_base" => Tiktoken.P50K,
     "p50k_edit" => Tiktoken.P50KEdit,
     "r50k_base" => Tiktoken.R50K,
-    "cl100k_base" => Tiktoken.CL100K
+    "cl100k_base" => Tiktoken.CL100K,
+    "o200k_base" => Tiktoken.O200K
   }
 
   def encoding_for_model(model) do
