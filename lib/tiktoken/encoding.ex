@@ -6,4 +6,6 @@ defmodule Tiktoken.Encoding do
   @callback encode_with_special_tokens(String.t()) :: {:ok, [integer()]} | {:error, String.t()}
 
   @callback decode([integer()]) :: {:ok, String.t()} | {:error, String.t()}
+
+  @callback count_tokens(String.t(), [binary()]) :: {:ok, integer()} | {:error, String.t()}
 end

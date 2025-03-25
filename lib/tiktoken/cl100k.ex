@@ -20,4 +20,9 @@ defmodule Tiktoken.CL100K do
   def decode(ids) do
     Tiktoken.Native.cl100k_decode(ids)
   end
+
+  @impl Tiktoken.Encoding
+  def count_tokens(text, allowed_special \\ []) do
+    Tiktoken.Native.cl100k_count_tokens(text, allowed_special)
+  end
 end

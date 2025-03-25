@@ -20,4 +20,9 @@ defmodule Tiktoken.P50KEdit do
   def decode(ids) do
     Tiktoken.Native.p50k_edit_decode(ids)
   end
+
+  @impl Tiktoken.Encoding
+  def count_tokens(text, allowed_special \\ []) do
+    Tiktoken.Native.p50k_edit_count_tokens(text, allowed_special)
+  end
 end
