@@ -57,12 +57,9 @@ fn p50k_decode(ids: Vec<usize>) -> Result<String, String> {
 
 #[rustler::nif]
 fn p50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
-    let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::p50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set).len())
-    }
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::p50k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
 }
 
 // p50k edit
@@ -109,12 +106,9 @@ fn p50k_edit_decode(ids: Vec<usize>) -> Result<String, String> {
 
 #[rustler::nif]
 fn p50k_edit_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
-    let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::p50k_edit_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set).len())
-    }
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::p50k_edit().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
 }
 
 // r50k
@@ -161,12 +155,9 @@ fn r50k_decode(ids: Vec<usize>) -> Result<String, String> {
 
 #[rustler::nif]
 fn r50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
-    let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::r50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set).len())
-    }
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::r50k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
 }
 
 // cl100k
@@ -213,12 +204,9 @@ fn cl100k_decode(ids: Vec<usize>) -> Result<String, String> {
 
 #[rustler::nif]
 fn cl100k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
-    let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::cl100k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set).len())
-    }
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::cl100k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
 }
 
 // o200k
@@ -265,12 +253,9 @@ fn o200k_decode(ids: Vec<usize>) -> Result<String, String> {
 
 #[rustler::nif]
 fn o200k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
-    let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::o200k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set).len())
-    }
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::o200k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
 }
 
 #[rustler::nif]
