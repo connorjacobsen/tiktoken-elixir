@@ -136,6 +136,39 @@ defmodule TiktokenTest do
     end
   end
 
+  describe "count_tokens/2" do
+    test "with supported model" do
+      text = "Tell me more about Elixir!"
+      assert {:ok, count} = Tiktoken.count_tokens("gpt-3.5-turbo", text)
+      assert count > 0
+      assert count == length(elem(Tiktoken.encode("gpt-3.5-turbo", text), 1))
+    end
+
+    test "with unsupported model" do
+      assert {:error, {:unsupported_model, "gpt2"}} =
+               Tiktoken.count_tokens("gpt2", "Hello")
+    end
+
+    test "with special tokens" do
+      text = "Tell me more about Elixir!"
+      special_tokens = ["<|endoftext|>"]
+      assert {:ok, count} = Tiktoken.count_tokens("gpt-3.5-turbo", text, special_tokens)
+      assert count > 0
+      assert count == length(elem(Tiktoken.encode("gpt-3.5-turbo", text, special_tokens), 1))
+    end
+
+    test "with different models" do
+      text = "Tell me more about Elixir!"
+      models = ["gpt-3.5-turbo", "text-davinci-003", "text-davinci-edit-001"]
+
+      Enum.each(models, fn model ->
+        assert {:ok, count} = Tiktoken.count_tokens(model, text)
+        assert count > 0
+        assert count == length(elem(Tiktoken.encode(model, text), 1))
+      end)
+    end
+  end
+
   describe "context_size_for_model/1" do
     test "get proper context size for model" do
       @known_models

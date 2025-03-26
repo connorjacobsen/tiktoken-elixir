@@ -55,6 +55,13 @@ fn p50k_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
+#[rustler::nif]
+fn p50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::p50k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
+}
+
 // p50k edit
 
 #[rustler::nif]
@@ -97,6 +104,13 @@ fn p50k_edit_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
+#[rustler::nif]
+fn p50k_edit_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::p50k_edit().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
+}
+
 // r50k
 
 #[rustler::nif]
@@ -137,6 +151,13 @@ fn r50k_decode(ids: Vec<usize>) -> Result<String, String> {
             Err(e) => Err(e.to_string()),
         }
     }
+}
+
+#[rustler::nif]
+fn r50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::r50k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
 }
 
 // cl100k
@@ -182,8 +203,10 @@ fn cl100k_decode(ids: Vec<usize>) -> Result<String, String> {
 }
 
 #[rustler::nif]
-fn context_size_for_model(model: &str) -> usize {
-    tiktoken_rs::model::get_context_size(model)
+fn cl100k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::cl100k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
 }
 
 // o200k
@@ -228,6 +251,18 @@ fn o200k_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
+#[rustler::nif]
+fn o200k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
+    let set: HashSet<&str> = allowed_special.into_iter().collect();
+    let bpe = tiktoken_rs::o200k_base().map_err(|e| e.to_string())?;
+    Ok(bpe.encode(text, set).len())
+}
+
+#[rustler::nif]
+fn context_size_for_model(model: &str) -> usize {
+    tiktoken_rs::model::get_context_size(model)
+}
+
 rustler::init!(
     "Elixir.Tiktoken.Native",
     [
@@ -236,22 +271,27 @@ rustler::init!(
         p50k_encode,
         p50k_encode_with_special_tokens,
         p50k_decode,
+        p50k_count_tokens,
         p50k_edit_encode_ordinary,
         p50k_edit_encode,
         p50k_edit_encode_with_special_tokens,
         p50k_edit_decode,
+        p50k_edit_count_tokens,
         r50k_encode_ordinary,
         r50k_encode,
         r50k_encode_with_special_tokens,
         r50k_decode,
+        r50k_count_tokens,
         cl100k_encode_ordinary,
         cl100k_encode,
         cl100k_encode_with_special_tokens,
         cl100k_decode,
+        cl100k_count_tokens,
         o200k_encode_ordinary,
         o200k_encode,
         o200k_encode_with_special_tokens,
         o200k_decode,
+        o200k_count_tokens,
         context_size_for_model
     ]
 );

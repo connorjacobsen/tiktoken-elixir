@@ -32,6 +32,10 @@ defmodule Tiktoken do
     delegate_call(model, :decode, [ids])
   end
 
+  def count_tokens(model, text, allowed_special \\ []) do
+    delegate_call(model, :count_tokens, [text, allowed_special])
+  end
+
   defp delegate_call(model, function, args) do
     if mod = encoding_for_model(model) do
       apply(mod, function, args)
