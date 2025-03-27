@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::vec::Vec;
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn encoding_for_model(model: &str) -> Option<&str> {
     match tiktoken_rs::tokenizer::get_tokenizer(model) {
         Some(tiktoken_rs::tokenizer::Tokenizer::O200kBase) => Some("o200k_base"),
@@ -15,7 +15,7 @@ fn encoding_for_model(model: &str) -> Option<&str> {
 
 // p50k
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::p50k_base_singleton();
     {
@@ -24,7 +24,7 @@ fn p50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
     let bpe = tiktoken_rs::p50k_base_singleton();
@@ -34,7 +34,7 @@ fn p50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, Str
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::p50k_base_singleton();
     {
@@ -43,7 +43,7 @@ fn p50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_decode(ids: Vec<usize>) -> Result<String, String> {
     let bpe = tiktoken_rs::p50k_base_singleton();
     {
@@ -55,7 +55,7 @@ fn p50k_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
     let bpe = tiktoken_rs::p50k_base().map_err(|e| e.to_string())?;
@@ -64,7 +64,7 @@ fn p50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, St
 
 // p50k edit
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::p50k_edit_singleton();
     {
@@ -73,7 +73,7 @@ fn p50k_edit_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
     let bpe = tiktoken_rs::p50k_edit_singleton();
@@ -83,7 +83,7 @@ fn p50k_edit_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::p50k_edit_singleton();
     {
@@ -92,7 +92,7 @@ fn p50k_edit_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_decode(ids: Vec<usize>) -> Result<String, String> {
     let bpe = tiktoken_rs::p50k_edit_singleton();
     {
@@ -104,7 +104,7 @@ fn p50k_edit_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
     let bpe = tiktoken_rs::p50k_edit().map_err(|e| e.to_string())?;
@@ -113,7 +113,7 @@ fn p50k_edit_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usiz
 
 // r50k
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::r50k_base_singleton();
     {
@@ -122,7 +122,7 @@ fn r50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
     let bpe = tiktoken_rs::r50k_base_singleton();
@@ -132,7 +132,7 @@ fn r50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, Str
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::r50k_base_singleton();
     {
@@ -141,7 +141,7 @@ fn r50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_decode(ids: Vec<usize>) -> Result<String, String> {
     let bpe = tiktoken_rs::r50k_base_singleton();
     {
@@ -153,7 +153,7 @@ fn r50k_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
     let bpe = tiktoken_rs::r50k_base().map_err(|e| e.to_string())?;
@@ -162,7 +162,7 @@ fn r50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, St
 
 // cl100k
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::cl100k_base_singleton();
     {
@@ -171,7 +171,7 @@ fn cl100k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
     let bpe = tiktoken_rs::cl100k_base_singleton();
@@ -181,7 +181,7 @@ fn cl100k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, S
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::cl100k_base_singleton();
     {
@@ -190,7 +190,7 @@ fn cl100k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_decode(ids: Vec<usize>) -> Result<String, String> {
     let bpe = tiktoken_rs::cl100k_base_singleton();
     {
@@ -202,7 +202,7 @@ fn cl100k_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
     let bpe = tiktoken_rs::cl100k_base().map_err(|e| e.to_string())?;
@@ -211,7 +211,7 @@ fn cl100k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, 
 
 // o200k
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::o200k_base_singleton();
     {
@@ -220,7 +220,7 @@ fn o200k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
     let bpe = tiktoken_rs::o200k_base_singleton();
@@ -230,7 +230,7 @@ fn o200k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, St
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     let bpe = tiktoken_rs::o200k_base_singleton();
     {
@@ -239,7 +239,7 @@ fn o200k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_decode(ids: Vec<usize>) -> Result<String, String> {
     let bpe = tiktoken_rs::o200k_base_singleton();
     {
@@ -251,14 +251,14 @@ fn o200k_decode(ids: Vec<usize>) -> Result<String, String> {
     }
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
     let bpe = tiktoken_rs::o200k_base().map_err(|e| e.to_string())?;
     Ok(bpe.encode(text, set).len())
 }
 
-#[rustler::nif]
+#[rustler::nif(schedule = "DirtyCpu")]
 fn context_size_for_model(model: &str) -> usize {
     tiktoken_rs::model::get_context_size(model)
 }
