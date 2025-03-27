@@ -1,5 +1,8 @@
+mod thread_local;
+
 use std::collections::HashSet;
 use std::vec::Vec;
+use thread_local::*;
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn encoding_for_model(model: &str) -> Option<&str> {
@@ -17,48 +20,33 @@ fn encoding_for_model(model: &str) -> Option<&str> {
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::p50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_ordinary(text))
-    }
+    let bpe = crate::p50k_base_thread_local();
+    Ok(bpe.encode_ordinary(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::p50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set))
-    }
+    let bpe = crate::p50k_base_thread_local();
+    Ok(bpe.encode(text, set))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::p50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_with_special_tokens(text))
-    }
+    let bpe = crate::p50k_base_thread_local();
+    Ok(bpe.encode_with_special_tokens(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_decode(ids: Vec<usize>) -> Result<String, String> {
-    let bpe = tiktoken_rs::p50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        match guard.decode(ids) {
-            Ok(text) => Ok(text),
-            Err(e) => Err(e.to_string()),
-        }
-    }
+    let bpe = crate::p50k_base_thread_local();
+    bpe.decode(ids).map_err(|e| e.to_string())
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    let bpe = tiktoken_rs::p50k_base().map_err(|e| e.to_string())?;
+    let bpe = crate::p50k_base_thread_local();
     Ok(bpe.encode(text, set).len())
 }
 
@@ -66,48 +54,33 @@ fn p50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, St
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::p50k_edit_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_ordinary(text))
-    }
+    let bpe = crate::p50k_edit_thread_local();
+    Ok(bpe.encode_ordinary(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::p50k_edit_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set))
-    }
+    let bpe = crate::p50k_edit_thread_local();
+    Ok(bpe.encode(text, set))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::p50k_edit_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_with_special_tokens(text))
-    }
+    let bpe = crate::p50k_edit_thread_local();
+    Ok(bpe.encode_with_special_tokens(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_decode(ids: Vec<usize>) -> Result<String, String> {
-    let bpe = tiktoken_rs::p50k_edit_singleton();
-    {
-        let guard = bpe.lock();
-        match guard.decode(ids) {
-            Ok(text) => Ok(text),
-            Err(e) => Err(e.to_string()),
-        }
-    }
+    let bpe = crate::p50k_edit_thread_local();
+    bpe.decode(ids).map_err(|e| e.to_string())
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    let bpe = tiktoken_rs::p50k_edit().map_err(|e| e.to_string())?;
+    let bpe = crate::p50k_edit_thread_local();
     Ok(bpe.encode(text, set).len())
 }
 
@@ -115,48 +88,33 @@ fn p50k_edit_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usiz
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::r50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_ordinary(text))
-    }
+    let bpe = crate::r50k_base_thread_local();
+    Ok(bpe.encode_ordinary(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::r50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set))
-    }
+    let bpe = crate::r50k_base_thread_local();
+    Ok(bpe.encode(text, set))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::r50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_with_special_tokens(text))
-    }
+    let bpe = crate::r50k_base_thread_local();
+    Ok(bpe.encode_with_special_tokens(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_decode(ids: Vec<usize>) -> Result<String, String> {
-    let bpe = tiktoken_rs::r50k_base_singleton();
-    {
-        let guard = bpe.lock();
-        match guard.decode(ids) {
-            Ok(text) => Ok(text),
-            Err(e) => Err(e.to_string()),
-        }
-    }
+    let bpe = crate::r50k_base_thread_local();
+    bpe.decode(ids).map_err(|e| e.to_string())
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    let bpe = tiktoken_rs::r50k_base().map_err(|e| e.to_string())?;
+    let bpe = crate::r50k_base_thread_local();
     Ok(bpe.encode(text, set).len())
 }
 
@@ -164,48 +122,33 @@ fn r50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, St
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::cl100k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_ordinary(text))
-    }
+    let bpe = crate::cl100k_base_thread_local();
+    Ok(bpe.encode_ordinary(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::cl100k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set))
-    }
+    let bpe = crate::cl100k_base_thread_local();
+    Ok(bpe.encode(text, set))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::cl100k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_with_special_tokens(text))
-    }
+    let bpe = crate::cl100k_base_thread_local();
+    Ok(bpe.encode_with_special_tokens(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_decode(ids: Vec<usize>) -> Result<String, String> {
-    let bpe = tiktoken_rs::cl100k_base_singleton();
-    {
-        let guard = bpe.lock();
-        match guard.decode(ids) {
-            Ok(text) => Ok(text),
-            Err(e) => Err(e.to_string()),
-        }
-    }
+    let bpe = crate::cl100k_base_thread_local();
+    bpe.decode(ids).map_err(|e| e.to_string())
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    let bpe = tiktoken_rs::cl100k_base().map_err(|e| e.to_string())?;
+    let bpe = crate::cl100k_base_thread_local();
     Ok(bpe.encode(text, set).len())
 }
 
@@ -213,48 +156,33 @@ fn cl100k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, 
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::o200k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_ordinary(text))
-    }
+    let bpe = crate::o200k_base_thread_local();
+    Ok(bpe.encode_ordinary(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    let bpe = tiktoken_rs::o200k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode(text, set))
-    }
+    let bpe = crate::o200k_base_thread_local();
+    Ok(bpe.encode(text, set))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
-    let bpe = tiktoken_rs::o200k_base_singleton();
-    {
-        let guard = bpe.lock();
-        Ok(guard.encode_with_special_tokens(text))
-    }
+    let bpe = crate::o200k_base_thread_local();
+    Ok(bpe.encode_with_special_tokens(text))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_decode(ids: Vec<usize>) -> Result<String, String> {
-    let bpe = tiktoken_rs::o200k_base_singleton();
-    {
-        let guard = bpe.lock();
-        match guard.decode(ids) {
-            Ok(text) => Ok(text),
-            Err(e) => Err(e.to_string()),
-        }
-    }
+    let bpe = crate::o200k_base_thread_local();
+    bpe.decode(ids).map_err(|e| e.to_string())
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    let bpe = tiktoken_rs::o200k_base().map_err(|e| e.to_string())?;
+    let bpe = crate::o200k_base_thread_local();
     Ok(bpe.encode(text, set).len())
 }
 
