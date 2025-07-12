@@ -31,7 +31,7 @@ defmodule Tiktoken.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
-      {:rustler, "~> 0.30.0"},
+      {:rustler, "~> 0.36.0"},
       {:rustler_precompiled, "~> 0.8"}
     ]
   end

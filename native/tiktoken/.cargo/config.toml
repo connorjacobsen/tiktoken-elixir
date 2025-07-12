@@ -23,4 +23,4 @@ rustflags = [
 ]
 
 [profile.release]
-lto = true
+lto = true 
