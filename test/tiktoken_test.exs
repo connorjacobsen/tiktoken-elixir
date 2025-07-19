@@ -4,15 +4,15 @@ defmodule TiktokenTest do
 
   @known_models [
     # chat
-    {"gpt-3.5-turbo", Tiktoken.CL100K, 4_096},
-    {"gpt-3.5-turbo-0125", Tiktoken.CL100K, 4_096},
+    {"gpt-3.5-turbo", Tiktoken.CL100K, 16_385},
+    {"gpt-3.5-turbo-0125", Tiktoken.CL100K, 16_385},
     {"gpt-3.5-turbo-1106", Tiktoken.CL100K, 16_385},
-    {"gpt-3.5-turbo-instruct", Tiktoken.CL100K, 4_096},
-    {"gpt-3.5-turbo-16k", Tiktoken.CL100K, 16_384},
-    {"gpt-3.5-turbo-0613", Tiktoken.CL100K, 4_096},
-    {"gpt-3.5-turbo-16k-0613", Tiktoken.CL100K, 16_384},
+    {"gpt-3.5-turbo-instruct", Tiktoken.CL100K, 16_385},
+    {"gpt-3.5-turbo-16k", Tiktoken.CL100K, 16_385},
+    {"gpt-3.5-turbo-0613", Tiktoken.CL100K, 16_385},
+    {"gpt-3.5-turbo-16k-0613", Tiktoken.CL100K, 16_385},
     {"gpt-4-0125-preview", Tiktoken.CL100K, 128_000},
-    {"gpt-4-turbo-preview", Tiktoken.CL100K, 8_192},
+    {"gpt-4-turbo-preview", Tiktoken.CL100K, 128_000},
     {"gpt-4-1106-preview", Tiktoken.CL100K, 128_000},
     {"gpt-4-vision-preview", Tiktoken.CL100K, 8_192},
     {"gpt-4-06-vision-preview", Tiktoken.CL100K, 8_192},

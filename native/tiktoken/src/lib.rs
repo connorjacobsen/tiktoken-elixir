@@ -27,146 +27,146 @@ thread_local! {
 // p50k
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
+fn p50k_encode_ordinary(text: &str) -> Result<Vec<u32>, String> {
     Ok(P50K_BASE.with(|bpe| bpe.encode_ordinary(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
+fn p50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<u32>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    Ok(P50K_BASE.with(|bpe| bpe.encode(text, set)))
+    Ok(P50K_BASE.with(|bpe| bpe.encode(text, &set).0))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
+fn p50k_encode_with_special_tokens(text: &str) -> Result<Vec<u32>, String> {
     Ok(P50K_BASE.with(|bpe| bpe.encode_with_special_tokens(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_decode(ids: Vec<usize>) -> Result<String, String> {
+fn p50k_decode(ids: Vec<u32>) -> Result<String, String> {
     P50K_BASE.with(|bpe| bpe.decode(ids).map_err(|e| e.to_string()))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    Ok(P50K_BASE.with(|bpe| bpe.encode(text, set).len()))
+    Ok(P50K_BASE.with(|bpe| bpe.encode(text, &set).0.len()))
 }
 
 // p50k edit
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_edit_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
+fn p50k_edit_encode_ordinary(text: &str) -> Result<Vec<u32>, String> {
     Ok(P50K_EDIT.with(|bpe| bpe.encode_ordinary(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_edit_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
+fn p50k_edit_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<u32>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    Ok(P50K_EDIT.with(|bpe| bpe.encode(text, set)))
+    Ok(P50K_EDIT.with(|bpe| bpe.encode(text, &set).0))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_edit_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
+fn p50k_edit_encode_with_special_tokens(text: &str) -> Result<Vec<u32>, String> {
     Ok(P50K_EDIT.with(|bpe| bpe.encode_with_special_tokens(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn p50k_edit_decode(ids: Vec<usize>) -> Result<String, String> {
+fn p50k_edit_decode(ids: Vec<u32>) -> Result<String, String> {
     P50K_EDIT.with(|bpe| bpe.decode(ids).map_err(|e| e.to_string()))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn p50k_edit_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    Ok(P50K_EDIT.with(|bpe| bpe.encode(text, set).len()))
+    Ok(P50K_EDIT.with(|bpe| bpe.encode(text, &set).0.len()))
 }
 
 // r50k
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn r50k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
+fn r50k_encode_ordinary(text: &str) -> Result<Vec<u32>, String> {
     Ok(R50K_BASE.with(|bpe| bpe.encode_ordinary(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn r50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
+fn r50k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<u32>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    Ok(R50K_BASE.with(|bpe| bpe.encode(text, set)))
+    Ok(R50K_BASE.with(|bpe| bpe.encode(text, &set).0))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn r50k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
+fn r50k_encode_with_special_tokens(text: &str) -> Result<Vec<u32>, String> {
     Ok(R50K_BASE.with(|bpe| bpe.encode_with_special_tokens(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn r50k_decode(ids: Vec<usize>) -> Result<String, String> {
+fn r50k_decode(ids: Vec<u32>) -> Result<String, String> {
     R50K_BASE.with(|bpe| bpe.decode(ids).map_err(|e| e.to_string()))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn r50k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    Ok(R50K_BASE.with(|bpe| bpe.encode(text, set).len()))
+    Ok(R50K_BASE.with(|bpe| bpe.encode(text, &set).0.len()))
 }
 
 // cl100k
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn cl100k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
+fn cl100k_encode_ordinary(text: &str) -> Result<Vec<u32>, String> {
     Ok(CL100K_BASE.with(|bpe| bpe.encode_ordinary(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn cl100k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
+fn cl100k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<u32>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    Ok(CL100K_BASE.with(|bpe| bpe.encode(text, set)))
+    Ok(CL100K_BASE.with(|bpe| bpe.encode(text, &set).0))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn cl100k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
+fn cl100k_encode_with_special_tokens(text: &str) -> Result<Vec<u32>, String> {
     Ok(CL100K_BASE.with(|bpe| bpe.encode_with_special_tokens(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn cl100k_decode(ids: Vec<usize>) -> Result<String, String> {
+fn cl100k_decode(ids: Vec<u32>) -> Result<String, String> {
     CL100K_BASE.with(|bpe| bpe.decode(ids).map_err(|e| e.to_string()))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn cl100k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    Ok(CL100K_BASE.with(|bpe| bpe.encode(text, set).len()))
+    Ok(CL100K_BASE.with(|bpe| bpe.encode(text, &set).0.len()))
 }
 
 // o200k
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn o200k_encode_ordinary(text: &str) -> Result<Vec<usize>, String> {
+fn o200k_encode_ordinary(text: &str) -> Result<Vec<u32>, String> {
     Ok(O200K_BASE.with(|bpe| bpe.encode_ordinary(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn o200k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<usize>, String> {
+fn o200k_encode(text: &str, allowed_special: Vec<&str>) -> Result<Vec<u32>, String> {
     let set = HashSet::from_iter(allowed_special.iter().cloned());
-    Ok(O200K_BASE.with(|bpe| bpe.encode(text, set)))
+    Ok(O200K_BASE.with(|bpe| bpe.encode(text, &set).0))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn o200k_encode_with_special_tokens(text: &str) -> Result<Vec<usize>, String> {
+fn o200k_encode_with_special_tokens(text: &str) -> Result<Vec<u32>, String> {
     Ok(O200K_BASE.with(|bpe| bpe.encode_with_special_tokens(text)))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
-fn o200k_decode(ids: Vec<usize>) -> Result<String, String> {
+fn o200k_decode(ids: Vec<u32>) -> Result<String, String> {
     O200K_BASE.with(|bpe| bpe.decode(ids).map_err(|e| e.to_string()))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
 fn o200k_count_tokens(text: &str, allowed_special: Vec<&str>) -> Result<usize, String> {
     let set: HashSet<&str> = allowed_special.into_iter().collect();
-    Ok(O200K_BASE.with(|bpe| bpe.encode(text, set).len()))
+    Ok(O200K_BASE.with(|bpe| bpe.encode(text, &set).0.len()))
 }
 
 #[rustler::nif(schedule = "DirtyCpu")]
@@ -174,35 +174,4 @@ fn context_size_for_model(model: &str) -> usize {
     tiktoken_rs::model::get_context_size(model)
 }
 
-rustler::init!(
-    "Elixir.Tiktoken.Native",
-    [
-        encoding_for_model,
-        p50k_encode_ordinary,
-        p50k_encode,
-        p50k_encode_with_special_tokens,
-        p50k_decode,
-        p50k_count_tokens,
-        p50k_edit_encode_ordinary,
-        p50k_edit_encode,
-        p50k_edit_encode_with_special_tokens,
-        p50k_edit_decode,
-        p50k_edit_count_tokens,
-        r50k_encode_ordinary,
-        r50k_encode,
-        r50k_encode_with_special_tokens,
-        r50k_decode,
-        r50k_count_tokens,
-        cl100k_encode_ordinary,
-        cl100k_encode,
-        cl100k_encode_with_special_tokens,
-        cl100k_decode,
-        cl100k_count_tokens,
-        o200k_encode_ordinary,
-        o200k_encode,
-        o200k_encode_with_special_tokens,
-        o200k_decode,
-        o200k_count_tokens,
-        context_size_for_model
-    ]
-);
+rustler::init!("Elixir.Tiktoken.Native");
